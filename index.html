@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Random Tools</title>
+    <link rel="preload" href="styles.css" as="style">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -39,6 +40,21 @@
         <p>© <span id="current-year"></span> Random Tools | <a href="https://github.com/Thib-ai/random-tools">GitHub</a></p>
     </footer>
 
+    <!-- Inline tools data to eliminate network request -->
+    <script>
+        window.__TOOLS_DATA__ = [
+    {
+        "id": "fedi-username-normalizer",
+        "title": "Fedi Username Normalizer",
+        "description": "Convert Fediverse profile URLs to standard username@domain format.",
+        "icon": "🔄",
+        "category": "text",
+        "tags": ["fediverse", "mastodon", "username", "normalize", "social"],
+        "path": "tools/fedi-username-normalizer/index.html",
+        "enabled": true
+    }
+];
+    </script>
     <script src="script.js"></script>
 </body>
 </html>

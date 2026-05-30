@@ -17,12 +17,12 @@ const filterButtons = document.querySelectorAll('.filter-btn');
 const currentYear = document.getElementById('current-year');
 
 // Initialize the page
-async function init() {
+function init() {
     // Set current year
     currentYear.textContent = new Date().getFullYear();
 
-    // Load tools from JSON
-    await loadTools();
+    // Load tools from inline data (instant)
+    loadTools();
 
     // Setup event listeners
     setupEventListeners();
@@ -31,21 +31,18 @@ async function init() {
     renderTools();
 }
 
-// Load tools from JSON file
-async function loadTools() {
-    try {
-        const response = await fetch('tools.json');
-        if (!response.ok) {
-            throw new Error('Failed to load tools');
-        }
-        tools = await response.json();
-        // Filter out disabled tools
-        tools = tools.filter(tool => tool.enabled !== false);
-    } catch (error) {
-        console.error('Error loading tools:', error);
-        // Fallback to empty array
+// Load tools from inline data (instant, no network request)
+function loadTools() {
+    // Use inline data if available, otherwise fallback to fetch
+    if (window.__TOOLS_DATA__) {
+        tools = window.__TOOLS_DATA__;
+    } else {
+        // Fallback for development or if inline data is missing
+        console.warn('Using fallback fetch for tools.json');
         tools = [];
     }
+    // Filter out disabled tools
+    tools = tools.filter(tool => tool.enabled !== false);
 }
 
 // Setup event listeners
