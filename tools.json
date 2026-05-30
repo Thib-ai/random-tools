@@ -1,0 +1,122 @@
+[
+    {
+        "id": "json-formatter",
+        "title": "JSON Formatter",
+        "description": "Format and validate JSON data with syntax highlighting and tree view.",
+        "icon": "📋",
+        "category": "code",
+        "tags": ["json", "format", "validate", "debug"],
+        "path": "tools/json-formatter/index.html",
+        "enabled": true
+    },
+    {
+        "id": "base64-encoder",
+        "title": "Base64 Encoder/Decoder",
+        "description": "Encode text to Base64 or decode Base64 back to text.",
+        "icon": "🔤",
+        "category": "text",
+        "tags": ["base64", "encode", "decode", "text"],
+        "path": "tools/base64-encoder/index.html",
+        "enabled": true
+    },
+    {
+        "id": "url-encoder",
+        "title": "URL Encoder/Decoder",
+        "description": "Encode or decode URLs and special characters for web use.",
+        "icon": "🌐",
+        "category": "web",
+        "tags": ["url", "encode", "decode", "web"],
+        "path": "tools/url-encoder/index.html",
+        "enabled": true
+    },
+    {
+        "id": "color-picker",
+        "title": "Color Picker",
+        "description": "Pick colors and get their HEX, RGB, HSL, and CMYK values.",
+        "icon": "🎨",
+        "category": "web",
+        "tags": ["color", "picker", "hex", "rgb", "design"],
+        "path": "tools/color-picker/index.html",
+        "enabled": true
+    },
+    {
+        "id": "qrcode-generator",
+        "title": "QR Code Generator",
+        "description": "Generate QR codes from text, URLs, or other data.",
+        "icon": "📷",
+        "category": "utility",
+        "tags": ["qrcode", "generator", "barcode", "scan"],
+        "path": "tools/qrcode-generator/index.html",
+        "enabled": true
+    },
+    {
+        "id": "timestamp-converter",
+        "title": "Timestamp Converter",
+        "description": "Convert between Unix timestamps and human-readable dates.",
+        "icon": "⏰",
+        "category": "utility",
+        "tags": ["timestamp", "date", "time", "convert"],
+        "path": "tools/timestamp-converter/index.html",
+        "enabled": true
+    },
+    {
+        "id": "markdown-editor",
+        "title": "Markdown Editor",
+        "description": "Write and preview Markdown with live rendering.",
+        "icon": "✏️",
+        "category": "text",
+        "tags": ["markdown", "editor", "preview", "text"],
+        "path": "tools/markdown-editor/index.html",
+        "enabled": true
+    },
+    {
+        "id": "password-generator",
+        "title": "Password Generator",
+        "description": "Generate secure, random passwords with customizable options.",
+        "icon": "🔐",
+        "category": "utility",
+        "tags": ["password", "generator", "security", "random"],
+        "path": "tools/password-generator/index.html",
+        "enabled": true
+    },
+    {
+        "id": "regex-tester",
+        "title": "Regex Tester",
+        "description": "Test regular expressions with real-time matching and highlighting.",
+        "icon": "🔍",
+        "category": "code",
+        "tags": ["regex", "tester", "pattern", "match"],
+        "path": "tools/regex-tester/index.html",
+        "enabled": true
+    },
+    {
+        "id": "image-compressor",
+        "title": "Image Compressor",
+        "description": "Compress images without losing quality using browser-based compression.",
+        "icon": "🖼️",
+        "category": "web",
+        "tags": ["image", "compress", "optimize", "web"],
+        "path": "tools/image-compressor/index.html",
+        "enabled": true
+    },
+    {
+        "id": "csv-viewer",
+        "title": "CSV Viewer",
+        "description": "View and edit CSV files directly in your browser.",
+        "icon": "📊",
+        "category": "code",
+        "tags": ["csv", "viewer", "table", "data"],
+        "path": "tools/csv-viewer/index.html",
+        "enabled": true
+    },
+    {
+        "id": "hash-generator",
+        "title": "Hash Generator",
+        "description": "Generate various hash values (MD5, SHA-1, SHA-256, etc.) from text.",
+        "icon": "🔢",
+        "category": "utility",
+        "tags": ["hash", "md5", "sha", "security"],
+        "path": "tools/hash-generator/index.html",
+        "enabled": true
+    }
+]
