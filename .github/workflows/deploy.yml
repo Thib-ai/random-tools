@@ -22,7 +22,6 @@ jobs:
 
       - name: Build
         run: |
-          # For static sites, just copy files
           mkdir -p dist
           cp -r * dist/ || true
           cp -r .github dist/ || true
@@ -30,17 +29,12 @@ jobs:
       - name: Deploy to GitHub Pages (main)
         if: github.ref == 'refs/heads/main'
         uses: actions/deploy-pages@v4
-        with:
-          artifact_name: "github-pages"
-          publish_dir: ./dist
 
       - name: Deploy PR Preview
         if: github.ref != 'refs/heads/main'
-        uses: Ross81/deploy-pr-preview@v2.1.1
+        uses: rossjrw/pr-preview-action@v1.8.1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          build_dir: ./dist
-          preview_branch: gh-pages
-          preview_dir: preview/pr-${{ github.event.pull_request.number }}
-          pr_number: ${{ github.event.pull_request.number }}
-          base_url: /random-tools
+          source-dir: ./dist
+          preview-branch: gh-pages
+          umbrella-dir: preview
+          pr-number: ${{ github.event.pull_request.number }}
