@@ -180,6 +180,7 @@ Agent:
 
 ## Version Control
 
+- **Work directly on main branch** - Do not create PRs unless explicitly requested by the user
 - Use descriptive commit messages
 - Keep commits focused and atomic
 - Reference issues or requests when applicable

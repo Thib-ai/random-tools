@@ -1,1 +1,12 @@
-[]
+[
+    {
+        "id": "fedi-username-normalizer",
+        "title": "Fedi Username Normalizer",
+        "description": "Convert Fediverse profile URLs to standard username@domain format.",
+        "icon": "🔄",
+        "category": "text",
+        "tags": ["fediverse", "mastodon", "username", "normalize", "social"],
+        "path": "tools/fedi-username-normalizer/index.html",
+        "enabled": true
+    }
+]
