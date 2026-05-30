@@ -47,9 +47,18 @@
             resize: vertical;
             box-sizing: border-box;
         }
-        textarea:focus {
+        textarea:focus,
+        input:focus {
             outline: none;
             border-color: #007bff;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            box-sizing: border-box;
         }
         .examples {
             margin-top: 2rem;
@@ -97,6 +106,11 @@ https://mastodon.social/@Mastodon"
         </div>
 
         <div class="input-output-group">
+            <label for="prefix">Prefix (added before each line):</label>
+            <input type="text" id="prefix" placeholder="e.g., Follow: ">
+        </div>
+
+        <div class="input-output-group">
             <label for="output-usernames">Normalized Usernames:</label>
             <textarea id="output-usernames" readonly></textarea>
         </div>
@@ -112,6 +126,7 @@ https://mastodon.social/@Mastodon"
 
     <script>
         const inputTextarea = document.getElementById('input-urls');
+        const prefixInput = document.getElementById('prefix');
         const outputTextarea = document.getElementById('output-usernames');
 
         function normalizeFediUrls(input) {
@@ -136,16 +151,25 @@ https://mastodon.social/@Mastodon"
                 }
             }
 
-            return results.join('\n');
+            return results;
         }
 
         function updateOutput() {
             const input = inputTextarea.value;
-            const output = normalizeFediUrls(input);
+            const prefix = prefixInput.value;
+            const normalized = normalizeFediUrls(input);
+            
+            const output = normalized.map(line => {
+                if (line === '') return '';
+                return prefix + line;
+            }).join('\n');
+            
             outputTextarea.value = output;
         }
 
         inputTextarea.addEventListener('input', updateOutput);
+        prefixInput.addEventListener('input', updateOutput);
+        
         inputTextarea.addEventListener('paste', function() {
             setTimeout(updateOutput, 10);
         });
