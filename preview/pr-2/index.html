@@ -1,10 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta http-equiv="refresh" content="0; url=./index.html" />
-  <title>Redirecting...</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Tools</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <p>Redirecting to <a href="./index.html">PR #$PR_NUM preview</a>...</p>
+    <header>
+        <h1>🛠️ Random Tools</h1>
+        <p>A collection of useful browser-based tools</p>
+    </header>
+
+    <main>
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="🔍 Search tools..." autocomplete="off">
+            <button id="clear-search" class="hidden">×</button>
+        </div>
+
+        <div class="filters">
+            <button id="filter-all" class="filter-btn active" data-category="all">All</button>
+            <button id="filter-web" class="filter-btn" data-category="web">Web</button>
+            <button id="filter-text" class="filter-btn" data-category="text">Text</button>
+            <button id="filter-code" class="filter-btn" data-category="code">Code</button>
+            <button id="filter-utility" class="filter-btn" data-category="utility">Utility</button>
+        </div>
+
+        <div id="tools-grid" class="tools-grid">
+            <!-- Tools will be dynamically loaded here -->
+        </div>
+
+        <div id="no-results" class="no-results hidden">
+            <p>No tools found matching your search.</p>
+        </div>
+    </main>
+
+    <footer>
+        <p>© <span id="current-year"></span> Random Tools | <a href="https://github.com/Thib-ai/random-tools">GitHub</a></p>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
