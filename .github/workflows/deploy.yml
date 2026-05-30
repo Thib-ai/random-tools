@@ -10,113 +10,41 @@ on:
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Need full history for git operations
+          fetch-depth: 0
 
-      - name: Setup Node.js (if needed for future tools)
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      # Determine the deployment path
       - name: Determine deployment path
         id: paths
         run: |
           if [ "${{ github.ref }}" = "refs/heads/main" ]; then
-            # Main branch deploys to root
-            echo "DEPLOY_PATH=." >> $GITHUB_OUTPUT
-            echo "PREVIEW_PATH=" >> $GITHUB_OUTPUT
+            echo "DEST_DIR=." >> $GITHUB_OUTPUT
           else
-            # PR branches deploy to /preview/pr-{number}/
             PR_NUM=${{ github.event.pull_request.number }}
-            echo "DEPLOY_PATH=preview/pr-$PR_NUM" >> $GITHUB_OUTPUT
-            echo "PREVIEW_PATH=/preview/pr-$PR_NUM/" >> $GITHUB_OUTPUT
+            echo "DEST_DIR=preview/pr-$PR_NUM" >> $GITHUB_OUTPUT
           fi
 
-      # Create a temporary directory for the built files
-      - name: Prepare build directory
+      - name: Prepare files
         run: |
           mkdir -p build
           cp -r * build/ || true
-          cp -r .github build/ || true
 
-      # Checkout the gh-pages branch (or create it)
-      - name: Checkout gh-pages branch
-        run: |
-          git fetch origin gh-pages || true
-          if git rev-parse --verify origin/gh-pages >/dev/null 2>&1; then
-            git checkout gh-pages
-            git pull origin gh-pages
-          else
-            git checkout --orphan gh-pages
-            git rm -rf .
-          fi
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
+          destination_dir: ${{ steps.paths.outputs.DEST_DIR }}
+          keep_files: false
+          user_name: "GitHub Actions"
+          user_email: "actions@github.com"
 
-      # Clean the target directory
-      - name: Clean target directory
-        run: |
-          if [ -n "${{ steps.paths.outputs.DEPLOY_PATH }}" ] && [ "${{ steps.paths.outputs.DEPLOY_PATH }}" != "." ]; then
-            rm -rf "${{ steps.paths.outputs.DEPLOY_PATH }}"
-          else
-            rm -rf .
-          fi
-
-      # Copy built files to the target location
-      - name: Copy files to target
-        run: |
-          if [ "${{ steps.paths.outputs.DEPLOY_PATH }}" = "." ]; then
-            cp -r build/* .
-          else
-            mkdir -p "${{ steps.paths.outputs.DEPLOY_PATH }}"
-            cp -r build/* "${{ steps.paths.outputs.DEPLOY_PATH }}/"
-          fi
-
-      # Create index.html redirect for PR previews
-      - name: Create redirect index for PR
-        if: github.ref != 'refs/heads/main'
-        run: |
-          PR_NUM=${{ github.event.pull_request.number }}
-          cat > "preview/pr-$PR_NUM/index.html" << 'EOF'
-          <!DOCTYPE html>
-          <html>
-          <head>
-            <meta http-equiv="refresh" content="0; url=./index.html" />
-            <title>Redirecting...</title>
-          </head>
-          <body>
-            <p>Redirecting to <a href="./index.html">PR #$PR_NUM preview</a>...</p>
-          </body>
-          </html>
-          EOF
-
-      # Commit and push to gh-pages
-      - name: Commit and push to gh-pages
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          
-          # Add all files
-          git add -A
-          
-          # Commit
-          if git diff --cached --quiet; then
-            echo "No changes to commit"
-          else
-            COMMIT_MSG="Deploy ${{ steps.paths.outputs.DEPLOY_PATH || 'main' }} from ${{ github.sha }}"
-            git commit -m "$COMMIT_MSG"
-            git push origin gh-pages
-          fi
-
-      # Post preview URL as PR comment
       - name: Comment PR with preview URL
         if: github.ref != 'refs/heads/main'
         uses: actions/github-script@v7
@@ -128,7 +56,6 @@ jobs:
             const repo = context.repo;
             const previewUrl = `https://${repo.owner}.github.io/${repo.repo}/preview/pr-${prNumber}/`;
             
-            // Check if comment already exists
             const { data: comments } = await github.rest.issues.listComments({
               owner: repo.owner,
               repo: repo.repo,
@@ -145,18 +72,5 @@ jobs:
                 repo: repo.repo,
                 issue_number: prNumber,
                 body: `🚀 **PR Preview Ready!**\n\nYou can preview this PR at:\n${previewUrl}\n\n_Note: Previews may take a few minutes to deploy._`
-              });
-            } else {
-              // Update existing comment
-              const commentId = previewComment.id;
-              const commentBody = previewComment.body.replace(
-                /https:\/\/[^\s]+/,
-                previewUrl
-              );
-              await github.rest.issues.updateComment({
-                owner: repo.owner,
-                repo: repo.repo,
-                comment_id: commentId,
-                body: commentBody
               });
             }
